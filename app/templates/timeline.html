@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="text-center my-4">Project Timeline</h1>
+<div class="timeline">
+    {% for task in tasks %}
+    <div class="timeline-item animate__animated animate__fadeInUp">
+        <div class="timeline-date">
+            {{ task.deadline.strftime('%Y-%m-%d') if task.deadline else 'No deadline' }}
+        </div>
+        <div class="timeline-content">
+            <h3>{{ task.name }}</h3>
+            <p>{{ task.description }}</p>
+            <p><strong>Project:</strong> {{ task.project.name if task.project else 'No project' }}</p>
+            <p><strong>Status:</strong> {{ task.status }}</p>
+            <p><strong>Priority:</strong> {{ task.priority }}</p>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<style>
+.timeline {
+    position: relative;
+    margin: 20px 0;
+    padding: 20px 0;
+    list-style: none;
+}
+
+.timeline:before {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 4px;
+    margin-left: -2px;
+    content: "";
+    background-color: #e9ecef;
+}
+
+.timeline-item {
+    position: relative;
+    margin: 10px 0;
+    padding: 20px 30px;
+    width: 50%;
+    border-radius: 8px;
+    background-color: #ffffff;
+    box-shadow: 0 0.1rem 0.1rem rgba(0, 0, 0, 0.1);
+}
+
+.timeline-item:nth-child(odd) {
+    left: 0;
+}
+
+.timeline-item:nth-child(even) {
+    left: 50%;
+}
+
+.timeline-item:before {
+    position: absolute;
+    top: 20px;
+    left: -6px;
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #007bff;
+    content: "";
+}
+
+.timeline-item:nth-child(even):before {
+    left: -6px;
+    right: auto;
+}
+
+.timeline-date {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #007bff;
+}
+
+.timeline-content {
+    padding: 15px;
+}
+</style>
+{% endblock %}

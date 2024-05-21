@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="text-center my-4 animate__animated animate__fadeInDown">Dashboard</h1>
+<div class="mb-4 text-center">
+    <button class="btn btn-primary animate__animated animate__pulse" data-toggle="modal" data-target="#addProjectModal" data-toggle="tooltip" title="Add a new project"><i class="fas fa-plus-circle"></i> Add Project</button>
+    <button class="btn btn-primary animate__animated animate__pulse" data-toggle="modal" data-target="#addTaskModal" data-toggle="tooltip" title="Add a new task"><i class="fas fa-plus-circle"></i> Add Task</button>
+    <a href="{{ url_for('main.timeline') }}" class="btn btn-primary animate__animated animate__pulse" data-toggle="tooltip" title="View project timeline"><i class="fas fa-calendar-alt"></i> View Timeline</a>
+</div>
+<h2 class="my-4 animate__animated animate__fadeInLeft">Projects</h2>
+<ul class="list-group animate__animated animate__fadeInLeft">
+    {% for project in projects %}
+        <li class="list-group-item">
+            <h4>{{ project.name }}</h4>
+            <p>{{ project.description }}</p>
+        </li>
+    {% endfor %}
+</ul>
+<h2 class="my-4 animate__animated animate__fadeInRight">Tasks</h2>
+<ul class="list-group animate__animated animate__fadeInRight">
+    {% for task in tasks %}
+        <li class="list-group-item">
+            <h4>{{ task.name }}</h4>
+            <p>{{ task.description }}</p>
+            <p><strong>Project:</strong> {{ task.project.name if task.project else 'No project' }}</p>
+            <p><strong>Status:</strong> {{ task.status }}</p>
+            <p><strong>Priority:</strong> {{ task.priority }}</p>
+        </li>
+    {% endfor %}
+</ul>
+
+<!-- Add Project Modal -->
+<div class="modal fade" id="addProjectModal" tabindex="-1" aria-labelledby="addProjectModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content animate__animated animate__zoomIn">
+      <form method="post" action="{{ url_for('main.add_project') }}">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addProjectModalLabel">Add Project</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="name">Project Name</label>
+            <input type="text" class="form-control" id="name" name="name" required>
+          </div>
+          <div class="form-group">
+            <label for="description">Description</label>
+            <textarea class="form-control" id="description" name="description" required></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Add Project</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Add Task Modal -->
+<div class="modal fade" id="addTaskModal" tabindex="-1" aria-labelledby="addTaskModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content animate__animated animate__zoomIn">
+      <form method="post" action="{{ url_for('main.add_task') }}">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addTaskModalLabel">Add Task</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="name">Task Name</label>
+            <input type="text" class="form-control" id="name" name="name" required>
+          </div>
+          <div class="form-group">
+            <label for="description">Description</label>
+            <textarea class="form-control" id="description" name="description" required></textarea>
+          </div>
+          <div class="form-group">
+            <label for="deadline">Deadline</label>
+            <input type="date" class="form-control" id="deadline" name="deadline" required>
+          </div>
+          <div class="form-group">
+            <label for="priority">Priority</label>
+            <select class="form-control" id="priority" name="priority" required>
+                <option>Low</option>
+                <option>Medium</option>
+                <option>High</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="project_id">Project</label>
+            <select class="form-control" id="project_id" name="project_id" required>
+                {% for project in projects %}
+                <option value="{{ project.id }}">{{ project.name }}</option>
+                {% endfor %}
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Add Task</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

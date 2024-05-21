@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Management System</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            background-color: #f5f7fa;
+            color: #343a40;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .navbar {
+            background-color: #ffffff;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .navbar-brand, .nav-link {
+            color: #00796b !important;
+        }
+
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .container {
+            margin-top: 20px;
+        }
+
+        .alert-warning {
+            background-color: #ffed4a;
+            color: #856404;
+            border-color: #ffeeba;
+        }
+
+        .btn-primary {
+            background-color: #00796b;
+            border-color: #00796b;
+        }
+
+        .btn-primary:hover {
+            background-color: #004d40;
+            border-color: #004d40;
+        }
+
+        h1, h2, h3 {
+            color: #00796b;
+        }
+
+        .list-group-item {
+            background-color: #ffffff;
+            border: 1px solid #e9ecef;
+        }
+
+        .modal-content {
+            background-color: #ffffff;
+        }
+
+        .footer {
+            background-color: #00796b;
+            color: #ffffff;
+            padding: 10px 0;
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <a class="navbar-brand ml-3" href="{{ url_for('main.index') }}">Task Management</a>
+        <div class="ml-auto mr-3">
+            <ul class="navbar-nav d-flex flex-row">
+                {% if current_user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('main.logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('main.login') }}"><i class="fas fa-sign-in-alt"></i> Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('main.register') }}"><i class="fas fa-user-plus"></i> Register</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+    <div class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="alert alert-warning" role="alert animate__animated animate__fadeInDown">
+                    {% for category, message in messages %}
+                        <p>{{ message }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </div>
+    <div class="footer">
+        <p>&copy; 2024 Task Management System</p>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
+</body>
+</html>
